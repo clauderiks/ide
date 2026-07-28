@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://gh-dash.dev/schema.json
+prSections:
+  - title: Mine
+    filters: is:open author:@me repo:dlvhdr/gh-dash
+    layout:
+      author:
+        hidden: true
+      repo:
+        hidden: true
+issuesSections:
+  - title: Open
+    filters: author:@me -author:@me sort:reactions
+
+confirmQuit: true
+
+defaults:
+  view: prs
+  preview:
+    width: 80
+  refetchIntervalMinutes: 10
+  layout:
+    prs:
+      repo:
+        hidden: true
+      base:
+        hidden: true
+  prsLimit: 100
+  issuesLimit: 100
+  notificationsLimit: 100
+
+theme:
+  colors:
+    text:
+      primary: "#FF0000"
+
+keybindings:
+  universal:
+    - key: O
+      name: show in finder
+      command: >-
+        open {{.RepoPath}}
+    - key: n
+      command: >-
+        gh pr create
+    - key: G
+      command: >-
+        gh dummy command
+  prs:
+    - key: O
+      builtin: comment
+    - key: N
+      command: echo "new command"

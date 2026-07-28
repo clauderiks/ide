@@ -1,0 +1,125 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+
+gomod:
+  proxy: true
+  env:
+    - GOPROXY=https://proxy.golang.org,direct
+    - GOSUMDB=sum.golang.org
+    - GOPRIVATE=github.com/dlvhdr/gh-dash
+  mod: mod
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    flags:
+      - -tags=nodbus
+    goos:
+      - android
+      - freebsd
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - "386"
+    goarm:
+      - "7"
+    ldflags:
+      - -s -w
+      - -X github.com/dlvhdr/gh-dash/cmd.Version={{.Version}}
+      - -X github.com/dlvhdr/gh-dash/cmd.Commit={{.Commit}}
+      - -X github.com/dlvhdr/gh-dash/cmd.Date={{.CommitDate}}
+      - -X github.com/dlvhdr/gh-dash/cmd.BuiltBy=goreleaser
+    # Skipping builds for Android non-ARM64 architectures as they need CGO enabled
+    # https://goreleaser.com/limitations/cgo/
+    ignore:
+      - goos: android
+        goarch: amd64
+      - goos: android
+        goarch: arm
+      - goos: android
+        goarch: "386"
+      - goos: windows
+        goarch: arm
+
+archives:
+  - formats:
+      - binary
+    name_template: "gh-dash_{{ .Tag }}_{{ .Os }}-{{ .Arch }}{{if .Arm}}_{{.Arm}}{{end}}"
+checksum:
+  name_template: "checksums.txt"
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+
+release:
+  header: |
+    # {{ .Version }}
+
+    <!-- what's new in this version? -->
+
+    To update run:
+    ```bash
+    gh extension upgrade dash
+    ```
+
+  footer: |
+    ---
+
+    If you enjoy `dash`, consider [making a donation](https://www.gh-dash.dev/donating) ❤️
+
+    Have questions? Join our [Discord community](https://discord.gg/SXNXp9NctV)!
+
+    <br />
+
+    <a  class="underline: none;" href="https://gh-dash.dev">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://gh-dash.dev/logo.png">
+        <img alt="DASH Logo" width="600" src="https://gh-dash.dev/logo-light.png">
+      </picture>
+    </a>
+
+announce:
+  bluesky:
+    enabled: true
+    username: "dlvhdr.me"
+    # message_template: (Default) '{{ .ProjectName }} {{ .Tag }} is out! Check it out at {{ .ReleaseURL }}'.
+
+  discord:
+    enabled: true
+    color: "8037112"
+    icon_url: "https://www.gh-dash.dev/favicon.png"
+    # message_template: (Default) '{{ .ProjectName }} {{ .Tag }} is out! Check it out at {{ .ReleaseURL }}'.
+
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - "^test:"
+      - "^chore"
+      - "merge conflict"
+      - Merge pull request
+      - Merge remote-tracking branch
+      - Merge branch
+      - go mod tidy
+  groups:
+    - title: Dependency updates
+      regexp: "^.*\\(deps\\)*:+.*$"
+      order: 300
+    - title: "New Features"
+      regexp: "^.*feat[(\\w)]*:+.*$"
+      order: 100
+    - title: "Bug fixes"
+      regexp: "^.*fix[(\\w)]*:+.*$"
+      order: 200
+    - title: "Documentation updates"
+      regexp: "^.*docs[(\\w)]*:+.*$"
+      order: 400
+    - title: Other work
+      order: 9999
