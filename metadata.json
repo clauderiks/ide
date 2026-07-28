@@ -1,0 +1,6 @@
+{
+  "name": "gh-dash Documentation & README Hub",
+  "description": "Comprehensive minimalist gh-dash documentation site, README interactive generator, real-time telemetry, API docs, multi-language support, dark mode, and cloud sync features.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
