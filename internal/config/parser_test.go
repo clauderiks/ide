@@ -1,0 +1,268 @@
+package config
+
+import (
+	"os"
+	"path"
+	"runtime"
+	"sort"
+	"strings"
+	"testing"
+
+	"charm.land/log/v2"
+	"github.com/google/go-cmp/cmp"
+	"github.com/knadh/koanf/parsers/yaml"
+	"github.com/knadh/koanf/providers/file"
+	"github.com/knadh/koanf/v2"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+
+	"github.com/dlvhdr/gh-dash/v4/internal/tui/testutils"
+)
+
+// See https://www.gh-dash.dev/configuration/#_top
+//  1. get default config file or create it if it's missing
+//     1.1. try GH_DASH_CONFIG
+//     1.2. then check if we're in a git repo
+//     1.2.1. try both `.gh-dash.yml` and `.gh-dash.yaml`
+//     1.3. try to look under `XDG_CONFIG_HOME`
+//     1.4. if not, try with `os.UserHomeDir()`
+//     1.5. if still doesn't exist, create with defaults
+//  2. read the config file
+//     2.1. read the file at the path
+//     2.2. validate the config
+
+const repoPath = "testdata"
+
+func init() {
+	log.SetLevel(log.ErrorLevel)
+}
+
+var keybindSorter = cmp.Transformer("Sort", func(in []Keybinding) []Keybinding {
+	out := append([]Keybinding(nil), in...) // Copy input to avoid mutating it
+	sort.Slice(out, func(i, j int) bool {
+		return strings.Compare(out[i].Key, out[j].Key) == -1
+	})
+	return out
+})
+
+func Testwd(t *testing.T) string {
+	_, filename, _, _ := runtime.Caller(0)
+	return path.Dir(filename)
+}
+
+func TestParser(t *testing.T) {
+	t.Run("Should create default config", func(t *testing.T) {
+		dir, err := os.MkdirTemp("", "config")
+		testutils.AssertNoError(t, err)
+		defer os.RemoveAll(dir)
+
+		os.Setenv("XDG_CONFIG_HOME", dir)
+		defer func() {
+			os.Unsetenv("XDG_CONFIG_HOME")
+		}()
+		t.Setenv("GH_DASH_CONFIG", "")
+
+		parsed, err := ParseConfig(Location{})
+		testutils.AssertNoError(t, err)
+		require.Len(t, parsed.PRSections, 3)
+	})
+
+	t.Run("Should read config passed by flag with highest priority", func(t *testing.T) {
+		clearXDGEnv := setXDGConfigHomeEnvVar(t, "testdata")
+		defer clearXDGEnv()
+		clearConfigEnv := setupConfigEnvVar(t)
+		defer clearConfigEnv()
+
+		cwd := Testwd(t)
+		parsed, err := ParseConfig(Location{
+			RepoPath:   path.Join(cwd, repoPath),
+			ConfigFlag: path.Join(cwd, "testdata/test-config.yml"),
+		})
+
+		testutils.AssertNoError(t, err)
+		require.Len(t, parsed.PRSections, 3)
+		require.Equal(t, "#E2E1ED", parsed.Theme.Colors.Inline.Text.Primary.String())
+	})
+
+	t.Run("Should then try GH_DASH_CONFIG env var", func(t *testing.T) {
+		clearXDGEnv := setXDGConfigHomeEnvVar(t, "testdata")
+		defer clearXDGEnv()
+		clearEnv := setupConfigEnvVar(t)
+		defer clearEnv()
+
+		cwd := Testwd(t)
+		parsed, err := ParseConfig(Location{
+			RepoPath:   path.Join(cwd, repoPath),
+			ConfigFlag: "",
+		})
+
+		require.Equal(t, err, nil)
+		require.Len(t, parsed.PRSections, 1)
+	})
+
+	t.Run("Should then try config in repo", func(t *testing.T) {
+		clearXDGEnv := setXDGConfigHomeEnvVar(t, "testdata")
+		defer clearXDGEnv()
+		cwd := Testwd(t)
+		parsed, err := ParseConfig(Location{
+			RepoPath:   path.Join(cwd, repoPath),
+			ConfigFlag: "",
+		})
+
+		testutils.AssertNoError(t, err)
+		require.Len(t, parsed.PRSections, 2)
+	})
+
+	t.Run("Should then read global config", func(t *testing.T) {
+		clearXDGEnv := setXDGConfigHomeEnvVar(t, "testdata")
+		defer clearXDGEnv()
+		clearEnv := setXDGConfigHomeEnvVar(t, "testdata")
+		defer clearEnv()
+
+		// parse config in ./testdata/gh-dash/config.yml
+		actual, err := ParseConfig(Location{})
+		testutils.AssertNoError(t, err)
+
+		expected := loadExpected(t, "./testdata/global-config.golden.yml")
+		assert.Empty(t, cmp.Diff(expected, actual, keybindSorter))
+	})
+
+	t.Run("Should accept notifications as the default view", func(t *testing.T) {
+		dir, err := os.MkdirTemp("", "config")
+		testutils.AssertNoError(t, err)
+		defer os.RemoveAll(dir)
+
+		configPath := path.Join(dir, "config.yml")
+		err = os.WriteFile(configPath, []byte("defaults:\n  view: notifications\n"), 0o600)
+		testutils.AssertNoError(t, err)
+
+		parsed, err := ParseConfig(Location{
+			ConfigFlag:       configPath,
+			SkipGlobalConfig: true,
+		})
+
+		testutils.AssertNoError(t, err)
+		require.Equal(t, NotificationsView, parsed.Defaults.View)
+	})
+
+	t.Run("Should merge global config with passed config", func(t *testing.T) {
+		clearEnv := setXDGConfigHomeEnvVar(t, "testdata")
+		defer clearEnv()
+
+		// merge with config in ./testdata/gh-dash/config.yml
+		cwd := Testwd(t)
+		actual, err := ParseConfig(Location{
+			ConfigFlag: path.Join(cwd, "./testdata/other-test-config.yml"),
+		})
+		testutils.AssertNoError(t, err)
+
+		expected := loadExpected(t, "./testdata/merged-config.golden.yml")
+		assert.Empty(t, cmp.Diff(expected, actual, keybindSorter))
+	})
+
+	t.Run("Should merge configs referenced by the include directive", func(t *testing.T) {
+		cwd := Testwd(t)
+		parsed, err := ParseConfig(Location{
+			ConfigFlag:       path.Join(cwd, "testdata/include-main.yml"),
+			SkipGlobalConfig: true,
+		})
+		testutils.AssertNoError(t, err)
+
+		// prSections survive from the included base even though the main file
+		// declares none of its own.
+		require.Len(t, parsed.PRSections, 1)
+		require.Equal(t, "Base PRs", parsed.PRSections[0].Title)
+
+		require.Equal(t, 42, parsed.Defaults.PrsLimit)   // from the included base
+		require.Equal(t, 7, parsed.Defaults.IssuesLimit) // from the main file
+
+		// Keybindings are unioned across all layers. "c" comes from a file that
+		// include-base itself includes, so three layers are merged — which used
+		// to panic when a later merge re-read already-merged keybindings.
+		keys := make([]string, 0, len(parsed.Keybindings.Universal))
+		for _, kb := range parsed.Keybindings.Universal {
+			keys = append(keys, kb.Key)
+		}
+		require.ElementsMatch(t, []string{"a", "b", "c"}, keys)
+	})
+
+	t.Run("Should accept ANSI color indices in theme", func(t *testing.T) {
+		cwd := Testwd(t)
+		parsed, err := ParseConfig(Location{
+			ConfigFlag:       path.Join(cwd, "testdata/ansi-color-config.yml"),
+			SkipGlobalConfig: true,
+		})
+
+		testutils.AssertNoError(t, err)
+		require.Equal(t, Color("12"), parsed.Theme.Colors.Inline.Text.Primary)
+		require.Equal(t, Color("013"), parsed.Theme.Colors.Inline.Border.Primary)
+		require.Equal(t, Color("008"), parsed.Theme.Colors.Inline.Background.Selected)
+	})
+}
+
+func loadExpected(t *testing.T, fpath string) Config {
+	t.Helper()
+	cwd := Testwd(t)
+	k := koanf.NewWithConf(conf)
+	err := k.Load(file.Provider(path.Join(cwd, fpath)), yaml.Parser())
+	testutils.AssertNoError(t, err)
+
+	expected := Config{}
+	err = k.UnmarshalWithConf("", &expected, koanf.UnmarshalConf{Tag: "yaml"})
+	testutils.AssertNoError(t, err)
+
+	return expected
+}
+
+func setXDGConfigHomeEnvVar(t *testing.T, dir string) func() {
+	t.Helper()
+	cwd := Testwd(t)
+	os.Setenv("XDG_CONFIG_HOME", path.Join(cwd, dir))
+	return func() {
+		os.Unsetenv("XDG_CONFIG_HOME")
+	}
+}
+
+func TestValidateColor(t *testing.T) {
+	// initParser registers the custom "color" validator
+	initParser()
+
+	type testColor struct {
+		Val Color `validate:"omitempty,color"`
+	}
+
+	valid := []string{
+		// hex colors
+		"#FFF", "#fff", "#a3c", "#FF0000", "#aa33cc",
+		// ANSI color indices (0-255)
+		"0", "1", "15", "16", "127", "255",
+		// with leading zeros (lipgloss treats identically via strconv.Atoi)
+		"000", "008", "013", "077",
+		// empty is allowed by omitempty
+		"",
+	}
+	for _, v := range valid {
+		err := validate.Struct(testColor{Val: Color(v)})
+		assert.NoErrorf(t, err, "expected %q to be valid", v)
+	}
+
+	invalid := []string{
+		"256", "999", "-1", // out of range
+		"abc", "red", "0xFF", // not numeric, not hex format
+		"#GG00FF", "#12345", // bad hex
+		"#1234567", // too long
+	}
+	for _, v := range invalid {
+		err := validate.Struct(testColor{Val: Color(v)})
+		assert.Errorf(t, err, "expected %q to be invalid", v)
+	}
+}
+
+func setupConfigEnvVar(t *testing.T) func() {
+	t.Helper()
+	cwd := Testwd(t)
+	os.Setenv("GH_DASH_CONFIG", path.Join(cwd, "testdata/other-test-config.yml"))
+	return func() {
+		os.Unsetenv("GH_DASH_CONFIG")
+	}
+}

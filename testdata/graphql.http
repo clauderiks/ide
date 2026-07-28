@@ -1,0 +1,54 @@
+###
+# @env-stdin-cmd GH_TOKEN gh auth token
+
+# @graphql
+# @operation FetchWorkspace
+POST {{graphql.endpoint}}
+Accept: application/json
+Authorization: Bearer {{GH_TOKEN}}
+
+query PullRequestChecks($url: URI!){
+  resource(url: $url) {
+    ... on PullRequest {
+      lastCommit: commits(last: 1) {
+        nodes {
+          commit {
+            statusCheckRollup {
+              state
+            }
+          }
+        }
+      }
+      allCommits: commits(last: 100) {
+        nodes {
+          commit {
+            abbreviatedOid
+            committedDate
+            messageHeadline
+            author {
+              name
+              user {
+                login
+              }
+            }
+            statusCheckRollup {
+              state
+              contexts(last: 1) {
+                checkRunCount
+                checkRunCountsByState {
+                  count
+                  state
+                }
+              }
+            }
+            checkSuites {
+              totalCount
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+{ "url": "https://github.com/dlvhdr/gh-dash/pull/729" }
