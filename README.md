@@ -7,7 +7,7 @@
 <p>
   <a href="https://github.com/dlvhdr/gh-dash/actions"><img alt="Build" src="https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge"></a>
   <a href="https://github.com/dlvhdr/gh-dash/releases"><img alt="Version" src="https://img.shields.io/badge/version-v4.12.0-blue?style=for-the-badge"></a>
-  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge"></a>
+  <a href="LICENSE.txt"><img alt="License" src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge"></a>
   <a href="https://github.com/dlvhdr/gh-dash/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/dlvhdr/gh-dash?style=for-the-badge"></a>
 </p>
 
