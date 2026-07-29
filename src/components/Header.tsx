@@ -12,7 +12,6 @@ import {
   Globe, 
   RefreshCw, 
   Bell,
-  Command,
   FileText,
   Github
 } from 'lucide-react';
@@ -56,20 +55,20 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-800 bg-black/95 backdrop-blur-md transition-colors font-mono select-none">
       {/* Top Banner Bar */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-2.5">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between">
         
         {/* Brand & CLI Prompt */}
-        <div className="flex items-center space-x-3">
+        <div className="flex w-full min-w-0 items-center gap-2 sm:w-auto sm:gap-3">
           <div className="w-9 h-9 rounded-none bg-emerald-950/80 border border-emerald-500/60 flex items-center justify-center text-emerald-400 font-mono font-bold text-sm shadow-[0_0_12px_rgba(16,185,129,0.15)]">
             $
           </div>
-          <div>
-            <div className="flex items-center space-x-2">
+          <div className="min-w-0 flex-1">
+            <div className="flex min-w-0 items-center gap-2">
               <span className="text-zinc-500 text-xs hidden sm:inline">usr@local:~$</span>
               <button
                 onClick={() => setIsGithubAuthed(!isGithubAuthed)}
                 id="github-auth-btn"
-                className={`flex items-center space-x-2 px-2.5 py-1 rounded-none text-xs font-mono font-medium border transition ${
+                className={`flex min-w-0 items-center gap-1.5 px-2 py-1 rounded-none text-[11px] sm:text-xs font-mono font-medium border transition ${
                   isGithubAuthed
                     ? 'bg-emerald-950/90 text-emerald-400 border-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.2)]'
                     : 'bg-zinc-900 text-zinc-300 border-zinc-700 hover:border-emerald-500 hover:text-white'
@@ -78,7 +77,8 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <Github className="w-3.5 h-3.5 text-emerald-400" />
                 <span>
-                  {isGithubAuthed ? 'GitHub Auth: Connected' : 'Auth GitHub Repo'}
+                  <span className="inline sm:hidden">GitHub</span>
+                  <span className="hidden sm:inline">{isGithubAuthed ? 'GitHub Auth: Connected' : 'Auth GitHub Repo'}</span>
                 </span>
                 <span className={`w-1.5 h-1.5 rounded-none ${isGithubAuthed ? 'bg-emerald-400 animate-pulse' : 'bg-zinc-500'}`}></span>
               </button>
@@ -90,12 +90,12 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Right Utility Bar - IBM Carbon Sharp Square Style */}
-        <div className="flex items-center space-x-1.5 sm:space-x-2">
+        <div className="flex w-full items-center justify-between gap-1.5 overflow-x-auto pb-1 sm:w-auto sm:justify-end sm:gap-2 sm:overflow-visible sm:pb-0">
           
           {/* Cloud Sync Status */}
-          <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-none bg-zinc-900/90 text-[11px] font-mono text-zinc-300 border border-zinc-800">
+          <div className="flex shrink-0 items-center gap-1.5 px-2 py-1 rounded-none bg-zinc-900/90 text-[11px] font-mono text-zinc-300 border border-zinc-800">
             <RefreshCw className={`w-3 h-3 text-emerald-400 ${cloudSyncing ? 'animate-spin' : ''}`} />
-            <span className="hidden sm:inline">{t.cloudSync}:</span>
+            <span className="hidden md:inline">{t.cloudSync}:</span>
             <span className="font-semibold text-emerald-400">
               {cloudSyncing ? t.syncSyncing : t.syncActive}
             </span>
@@ -106,7 +106,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onOpenAlerts}
             id="extended-settings-btn"
-            className="flex items-center space-x-1.5 px-2.5 py-1 rounded-none bg-zinc-900/90 text-zinc-300 hover:bg-zinc-800 hover:border-emerald-500/60 transition border border-zinc-800 text-[11px]"
+            className="flex shrink-0 items-center gap-1.5 px-2 py-1 rounded-none bg-zinc-900/90 text-zinc-300 hover:bg-zinc-800 hover:border-emerald-500/60 transition border border-zinc-800 text-[11px]"
             title="Mở Cài Đặt Mở Rộng (Extended Settings)"
           >
             <Sliders className="w-3.5 h-3.5 text-emerald-400" />
@@ -117,7 +117,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onOpenAlerts}
             id="email-alerts-btn"
-            className="p-1.5 rounded-none bg-zinc-900/90 text-zinc-300 hover:bg-zinc-800 hover:border-emerald-500/60 transition relative border border-zinc-800"
+            className="shrink-0 p-1.5 rounded-none bg-zinc-900/90 text-zinc-300 hover:bg-zinc-800 hover:border-emerald-500/60 transition relative border border-zinc-800"
             title={t.emailAlerts}
           >
             <Bell className="w-3.5 h-3.5 text-zinc-400" />
@@ -125,7 +125,7 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           {/* Language Selector (IBM Carbon Sharp Tabs) */}
-          <div className="flex items-center bg-zinc-900/90 p-0.5 rounded-none border border-zinc-800 text-[11px]">
+          <div className="flex shrink-0 items-center bg-zinc-900/90 p-0.5 rounded-none border border-zinc-800 text-[11px]">
             <Globe className="w-3 h-3 text-zinc-500 mx-1 hidden sm:block" />
             {(['vi', 'en', 'ja', 'es'] as Language[]).map((lang) => (
               <button
@@ -144,7 +144,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Theme Switcher */}
-          <div className="flex items-center bg-zinc-900/90 p-0.5 rounded-none border border-zinc-800 text-[11px]">
+          <div className="flex shrink-0 items-center bg-zinc-900/90 p-0.5 rounded-none border border-zinc-800 text-[11px]">
             <button
               onClick={() => setTheme('light')}
               id="theme-light-btn"
@@ -181,7 +181,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Primary Navigation Tabs (Desktop & Tablet Horizontal Strip) */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 border-t border-zinc-800/80 overflow-x-auto scrollbar-none">
-        <nav className="flex space-x-1 min-w-max py-1.5">
+        <nav className="flex min-w-max gap-1 py-1.5">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;

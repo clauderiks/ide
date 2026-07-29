@@ -63,7 +63,7 @@ export default function App() {
       />
 
       {/* Main Content Body */}
-      <main className="pb-24 md:pb-16">
+      <main className="pb-24 md:pb-16 overflow-x-hidden">
         {activeTab === 'readme' && <ReadmeViewer language={language} />}
         {activeTab === 'terminal' && <TerminalSimulator />}
         {activeTab === 'config' && <ConfigGenerator language={language} />}
@@ -75,11 +75,11 @@ export default function App() {
 
       {/* Footer */}
       <footer className="border-t border-zinc-800/80 py-6 bg-black/90 backdrop-blur-sm text-center text-xs font-mono text-zinc-500 mb-12 md:mb-0">
-        <div className="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div>
             gh-dash v4.12.0 • Minimalist Terminal Dashboard for GitHub [IBM Carbon UI]
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
             <a href="https://github.com/dlvhdr/gh-dash" target="_blank" rel="noreferrer" className="hover:underline text-emerald-400">
               GitHub Repository
             </a>
