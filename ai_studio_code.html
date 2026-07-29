@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClaudeRiks IDE - IBM Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'IBM Plex Mono', monospace;
+            background-color: #000;
+            color: #e0e0e0;
+        }
+        .glossy-panel {
+            background: linear-gradient(145deg, #161616, #050505);
+            border: 1px solid #393939;
+        }
+        .terminal-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb {
+            background: #393939;
+        }
+        .btn-ibm {
+            transition: all 0.2s ease;
+            border: 1px solid #393939;
+        }
+        .btn-ibm:active {
+            background-color: #0f62fe;
+            color: white;
+            border-color: #0f62fe;
+        }
+        .cursor-blink {
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body class="p-4 max-w-md mx-auto">
+
+    <!-- Header: System Status -->
+    <header class="mb-6 flex justify-between items-center border-b border-[#393939] pb-2">
+        <div class="text-[10px] uppercase tracking-widest text-[#8d8d8d]">
+            System: <span class="text-[#0f62fe]">Active</span>
+        </div>
+        <div class="text-[10px] uppercase tracking-widest text-[#8d8d8d]">
+            Nodes: 04 | 2.43 Mbps
+        </div>
+    </header>
+
+    <!-- Execution Log (Nhật ký thực thi) -->
+    <section class="glossy-panel h-64 p-3 mb-6 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-[#0f62fe] opacity-50"></div>
+        <div class="terminal-scroll h-full overflow-y-auto text-xs space-y-1">
+            <p class="text-[#8d8d8d]">[02:43:01] Initializing GitHub Auth...</p>
+            <p class="text-[#24a148]">[OK] Authenticated as @ClaudeRiks</p>
+            <p class="text-[#8d8d8d]">[02:43:05] Fetching Pull Requests...</p>
+            <p class="text-[#f1c21b]">[WARN] Latency detected in Asia-East-1</p>
+            <p class="text-white">usr@local:~$ gh dash --view dashboard</p>
+            <p class="text-[#0f62fe] animate-pulse">>> Syncing Cloud Database...</p>
+            <p class="text-white">_ <span class="cursor-blink">|</span></p>
+        </div>
+    </section>
+
+    <!-- Action Grid (Nút vuông góc cạnh) -->
+    <nav class="grid grid-cols-2 gap-2">
+        <button class="btn-ibm p-4 flex flex-col items-start space-y-2 bg-[#161616]">
+            <span class="text-[10px] text-[#8d8d8d] font-bold">01</span>
+            <span class="text-sm font-semibold uppercase">Tài liệu</span>
+        </button>
+        <button class="btn-ibm p-4 flex flex-col items-start space-y-2 bg-[#161616]">
+            <span class="text-[10px] text-[#8d8d8d] font-bold">02</span>
+            <span class="text-sm font-semibold uppercase">Cấu hình</span>
+        </button>
+        <button class="btn-ibm p-4 flex flex-col items-start space-y-2 bg-[#161616]">
+            <span class="text-[10px] text-[#8d8d8d] font-bold">03</span>
+            <span class="text-sm font-semibold uppercase">API Kết nối</span>
+        </button>
+        <button class="btn-ibm p-4 flex flex-col items-start space-y-2 bg-[#161616]">
+            <span class="text-[10px] text-[#8d8d8d] font-bold">04</span>
+            <span class="text-sm font-semibold uppercase">Cộng đồng</span>
+        </button>
+    </nav>
+
+    <!-- Execution Input (Giả lập thực thi lệnh) -->
+    <section class="mt-6">
+        <div class="relative">
+            <span class="absolute left-3 top-3 text-[#0f62fe]">$</span>
+            <input type="text" 
+                   class="w-full bg-[#161616] border border-[#393939] p-3 pl-8 text-sm focus:outline-none focus:border-[#0f62fe] placeholder-[#525252]"
+                   placeholder="Nhập lệnh thực thi (e.g. --sync)">
+        </div>
+    </section>
+
+    <!-- Footer Stats -->
+    <footer class="mt-8 grid grid-cols-3 gap-1 border-t border-[#393939] pt-4">
+        <div class="text-center border-r border-[#393939]">
+            <p class="text-[8px] text-[#8d8d8d] uppercase italic">Memory</p>
+            <p class="text-xs font-bold">128MB</p>
+        </div>
+        <div class="text-center border-r border-[#393939]">
+            <p class="text-[8px] text-[#8d8d8d] uppercase italic">Uptime</p>
+            <p class="text-xs font-bold">99.9%</p>
+        </div>
+        <div class="text-center">
+            <p class="text-[8px] text-[#8d8d8d] uppercase italic">Region</p>
+            <p class="text-xs font-bold">VN-S1</p>
+        </div>
+    </footer>
+
+</body>
+</html>
