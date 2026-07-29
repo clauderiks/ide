@@ -73,7 +73,7 @@ go install github.com/dlvhdr/gh-dash@latest
 
 ---
 
-## 🎮 Visual Demo & Controls
+## 🎮 Visual Test & Controls
 
 ```
 +-----------------------------------------------------------------------------------+
