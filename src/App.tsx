@@ -63,7 +63,7 @@ export default function App() {
       />
 
       {/* Main Content Body */}
-      <main className="pb-24 md:pb-16 overflow-x-hidden">
+      <main className="pb-24 md:pb-16 [overflow-x:clip]">
         {activeTab === 'readme' && <ReadmeViewer language={language} />}
         {activeTab === 'terminal' && <TerminalSimulator />}
         {activeTab === 'config' && <ConfigGenerator language={language} />}
