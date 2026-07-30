@@ -25,15 +25,9 @@ export const ReadmeViewer: React.FC<ReadmeViewerProps> = ({ language }) => {
   }, [language]);
 
   useEffect(() => {
-    const applyMobileDefault = () => {
-      if (window.innerWidth < 768) {
-        setViewMode('preview');
-      }
-    };
-
-    applyMobileDefault();
-    window.addEventListener('resize', applyMobileDefault);
-    return () => window.removeEventListener('resize', applyMobileDefault);
+    if (window.innerWidth < 768) {
+      setViewMode('preview');
+    }
   }, []);
 
   const t = translations[language] || translations.en;
