@@ -1,139 +1,169 @@
-# ⚡ gh-dash — Minimalist Terminal Dashboard for GitHub
+<div align="center">
 
-> A sleek, highly customizable terminal UI (TUI) extension for the GitHub CLI (`gh`). Manage Pull Requests, Issues, Notifications, and Workflows with lightning speed.
+# ⚡ gh-dash
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square)](https://github.com/dlvhdr/gh-dash)
-[![Version](https://img.shields.io/badge/version-v4.12.0-blue.svg?style=flat-square)](https://github.com/dlvhdr/gh-dash/releases)
-[![License](https://img.shields.io/badge/license-MIT-purple.svg?style=flat-square)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/dlvhdr/gh-dash?style=flat-square)](https://github.com/dlvhdr/gh-dash/stargazers)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square)](CONTRIBUTING.md)
+### Terminal dashboard tối giản, nhanh và đẹp cho GitHub CLI
 
----
+<p>
+  <a href="https://github.com/dlvhdr/gh-dash/actions"><img alt="Build" src="https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge"></a>
+  <a href="https://github.com/dlvhdr/gh-dash/releases"><img alt="Version" src="https://img.shields.io/badge/version-v4.12.0-blue?style=for-the-badge"></a>
+  <a href="LICENSE.txt"><img alt="License" src="https://img.shields.io/badge/license-MIT-purple?style=for-the-badge"></a>
+  <a href="https://github.com/dlvhdr/gh-dash/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/dlvhdr/gh-dash?style=for-the-badge"></a>
+</p>
 
-## 📖 Table of Contents (Mục Lục)
+> Quản lý Pull Request, Issue, Notification và Workflow ngay trong terminal — tập trung, gọn gàng và dùng hoàn toàn bằng bàn phím.
 
-1. [Overview & Features (Tổng quan & Tính năng)](#-overview--features)
-2. [Quick Start & Installation (Cài đặt nhanh)](#-quick-start--installation)
-3. [Visual Demo & Controls (Minh họa & Điều khiển)](#-visual-demo--controls)
-4. [GitHub Quick Deployment (Triển khai nhanh trên GitHub)](#-github-quick-deployment)
-5. [Advanced Configuration (Cấu hình nâng cao)](#-advanced-configuration)
-6. [Complete Customization Parameter Matrix (Bảng thông số tùy biến)](#-complete-customization-parameter-matrix)
-7. [Developer API & Integration Guide (Tài liệu API & Tích hợp)](#-developer-api--integration-guide)
-8. [Real-time Telemetry & Cloud Sync (Đồng bộ đám mây & Thống kê)](#-real-time-telemetry--cloud-sync)
-9. [Automated Backup & Disaster Recovery (Sao lưu & Khôi phục)](#-automated-backup--disaster-recovery)
-10. [Security & 2FA Setup (Bảo mật 2FA & Cảnh báo)](#-security--2fa-setup)
-11. [Troubleshooting & FAQ (Khắc phục sự cố)](#-troubleshooting--faq)
-12. [Community Forum & Pull Request Guidelines (Cộng đồng & Đóng góp)](#-community-forum--pull-request-guidelines)
+<img src="docs/src/assets/overview.gif" alt="Demo giao diện dòng lệnh gh-dash" width="100%">
+
+</div>
 
 ---
 
-## 🚀 Overview & Features
+## ✨ Thiết kế giao diện dòng lệnh
 
-`gh-dash` is designed for developers who live in the terminal. Built with Go and Bubbletea, it provides a rich, keyboard-driven dashboard for viewing and acting on GitHub pull requests and issues across all your repositories.
+<div align="center">
+  <img src="docs/src/assets/pr-sections.png" alt="Giao diện danh sách Pull Request trên terminal" width="100%">
+</div>
 
-### Key Capabilities
+<br>
 
-- **⚡ Keyboard-Driven Navigation**: Fast Vim-style bindings (`j`, `k`, `g`, `G`, `/`, `Enter`).
-- **🎨 Deep Customization**: Fully configurable colors, layout panels, border styles, and custom keybindings.
-- **🔄 Real-time Cloud Sync**: Sync configuration across machines with automatic cloud state backup.
-- **🔒 Security & 2FA Guard**: Enhanced security token verification and mandatory two-factor authentication for sensitive actions.
-- **📊 Performance Telemetry**: In-terminal & web-backed real-time resource and latency monitoring.
-- **🌍 Multi-language & Dark/Light Themes**: Native support for English, Vietnamese, Japanese, and Spanish with OLED dark mode.
-- **🔔 Push & Email Alerts**: Real-time notifications for critical security patches and new releases.
+<div>
+  <p><strong>⚡ Điều hướng nhanh:</strong> tối ưu cho bàn phím với các phím quen thuộc như <code>j</code>, <code>k</code>, <code>/</code>, <code>Enter</code>.</p>
+  <p><strong>🧭 Bố cục rõ ràng:</strong> top bar để chuyển section, vùng tìm kiếm lớn, danh sách PR/Issue bên trái và preview chi tiết bên phải.</p>
+  <p><strong>🎨 Theme terminal:</strong> hỗ trợ nhiều phong cách màu tối, tương phản cao, phù hợp màn hình desktop lẫn laptop nhỏ.</p>
+  <p><strong>🧩 GitHub-native:</strong> cài như extension của <code>gh</code>, dùng trực tiếp trong workflow review hằng ngày.</p>
+</div>
 
 ---
 
-## 📦 Quick Start & Installation
+## 📱 Bố cục mobile-friendly trong README
 
-### Option 1: Via GitHub CLI Extension (Recommended)
+Thay vì nhồi quá nhiều bảng rộng, README được chia thành các khối ngắn để dễ đọc trên điện thoại:
+
+- **Hero + ảnh giới thiệu** ở đầu trang để người dùng thấy ngay sản phẩm.
+- **Quick actions** bằng code block ngắn, dễ copy trên mobile.
+- **Ảnh demo theo từng ngữ cảnh**: tổng quan, theme, help screen và workflow.
+- **Bảng phím tắt tối giản** chỉ giữ những thao tác quan trọng nhất.
+
+<div align="center">
+  <img src="docs/src/assets/charm-vid-preview.jpg" alt="Ảnh giới thiệu gh-dash trong video demo" width="100%">
+</div>
+
+---
+
+## 📚 Mục lục
+
+- [Cài đặt nhanh](#-cài-đặt-nhanh)
+- [Bộ sưu tập hình ảnh](#-bộ-sưu-tập-hình-ảnh)
+- [Luồng sử dụng trong terminal](#-luồng-sử-dụng-trong-terminal)
+- [Phím tắt mặc định](#-phím-tắt-mặc-định)
+- [Cấu hình mẫu](#-cấu-hình-mẫu)
+- [Tùy biến thường dùng](#-tùy-biến-thường-dùng)
+- [Dành cho nhà phát triển](#-dành-cho-nhà-phát-triển)
+- [Khắc phục sự cố](#-khắc-phục-sự-cố)
+- [Đóng góp](#-đóng-góp)
+
+---
+
+## 🚀 Cài đặt nhanh
+
+### 1. Cài qua GitHub CLI Extension
 
 ```bash
-# Ensure gh CLI is installed and authenticated
 gh auth login
-
-# Install gh-dash extension
 gh extension install dlvhdr/gh-dash
-
-# Run gh-dash
 gh dash
 ```
 
-### Option 2: Homebrew (macOS / Linux)
+### 2. Cài qua Homebrew
 
 ```bash
 brew tap dlvhdr/gh-dash
 brew install gh-dash
 ```
 
-### Option 3: Go Install (Cross-platform)
+### 3. Cài bằng Go
 
 ```bash
 go install github.com/dlvhdr/gh-dash@latest
 ```
 
----
-
-## 🎮 Visual Demo & Controls
-
-```
-+-----------------------------------------------------------------------------------+
-|  gh-dash v4.12.0  [PRs: 12]  [Issues: 8]  [Sync: Online 🟢]  [2FA: Active 🔒]   |
-+-----------------------------------------------------------------------------------+
-|  PULL REQUESTS (Mine)                       |  ISSUES (Assigned)                  |
-|  ------------------------------------------ | ----------------------------------- |
-|  [#104] feat: add cloud auto-backup         |  [#89] bug: latency in dark theme  |
-|  [#102] fix: race condition in sync worker  |  [#76] docs: add API reference     |
-|  [#98]  refactor: upgrade bubbletea         |  [#54] feat: push notifications    |
-+-----------------------------------------------------------------------------------+
-|  DETAILS VIEW [#104]                                                              |
-|  Author: @octocat  | Branch: main <- feat/cloud-backup | Checks: 12/12 Passing      |
-|  Reviewers: @dev1 (Approved), @dev2 (Changes Requested)                           |
-+-----------------------------------------------------------------------------------+
-|  [j/k] Navigate  [Enter] View  [c] Checkout  [o] Open in Browser  [q] Quit        |
-+-----------------------------------------------------------------------------------+
-```
-
-### Default Keybindings Table
-
-| Key | Action | Mô tả (Vietnamese) |
-| :--- | :--- | :--- |
-| `j` / `k` | Move cursor down / up | Di chuyển lên / xuống |
-| `h` / `l` | Switch between sections | Chuyển đổi giữa các bảng |
-| `Enter` | Open detail preview modal | Mở xem chi tiết |
-| `o` | Open PR/Issue in web browser | Mở trên trình duyệt web |
-| `c` | Checkout git branch locally | Checkout branch về máy local |
-| `r` | Refresh current section | Tải lại dữ liệu |
-| `d` | View diff / changes | Xem khác biệt mã nguồn (Diff) |
-| `/` | Search & Filter items | Tìm kiếm & lọc nâng cao |
-| `?` | Show help dialog | Hiển thị bảng trợ giúp |
+> Yêu cầu khuyến nghị: đã cài `gh`, đã đăng nhập GitHub và terminal hỗ trợ UTF-8.
 
 ---
 
-## 🛠 GitHub Quick Deployment
+## 🖼️ Bộ sưu tập hình ảnh
 
-Deploy your own customized documentation hub or gh-dash instance to GitHub Pages / Cloud Run in seconds:
+<table>
+  <tr>
+    <td width="50%">
+      <img src="docs/src/assets/overview.gif" alt="Demo tổng quan gh-dash" width="100%">
+      <br><strong>Tổng quan PR review</strong>
+    </td>
+    <td width="50%">
+      <img src="docs/src/assets/help.png" alt="Màn hình trợ giúp phím tắt" width="100%">
+      <br><strong>Help screen và phím tắt</strong>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="docs/src/assets/tokyo.png" alt="Theme Tokyo Night" width="100%">
+      <br><strong>Theme Tokyo Night</strong>
+    </td>
+    <td width="50%">
+      <img src="docs/src/assets/catpuccin.png" alt="Theme Catppuccin" width="100%">
+      <br><strong>Theme Catppuccin</strong>
+    </td>
+  </tr>
+</table>
 
-```bash
-# Clone repository
-git clone https://github.com/your-username/gh-dash-hub.git
-cd gh-dash-hub
-
-# Install dependencies
-npm install
-
-# Run locally in dev mode
-npm run dev
-
-# Deploy to GitHub Pages automatically
-npm run build
-npx gh-pages -d dist
-```
+> Trên màn hình nhỏ, GitHub tự xếp lại ảnh theo chiều dọc nên phần giới thiệu vẫn dễ xem trên mobile.
 
 ---
 
-## ⚙️ Advanced Configuration
+## 🧭 Luồng sử dụng trong terminal
 
-Configuration is managed via `~/.config/gh-dash/config.yml`.
+```text
+┌─ Top navigation ───────────────────────────────────────────────┐
+│ 🔍 | My Pull Requests | Needs My Review | Issues | v4.16.x     │
+├─ Search / filter ──────────────────────────────────────────────┤
+│ is:pr is:open author:@me owner:dlvhdr                         │
+├─ List view ────────────────────────┬─ Preview panel ───────────┤
+│ #356 support keybindings prototype │ Merged · main ← branch     │
+│ #364 feat: loading message         │ Overview · Checks · Diff   │
+│ #039 dynamically fetch PR          │ Summary and comments       │
+├─ Status bar ───────────────────────────────────────────────────┤
+│ PRs · Issues · assets · updated ~1m ago · ? help               │
+└────────────────────────────────────────────────────────────────┘
+```
+
+1. Chọn section ở thanh trên cùng.
+2. Lọc nhanh bằng GitHub search query.
+3. Di chuyển trong danh sách PR/Issue bằng bàn phím.
+4. Xem preview, diff, checks và mở GitHub khi cần.
+
+---
+
+## ⌨️ Phím tắt mặc định
+
+| Phím | Hành động | Ghi chú |
+| --- | --- | --- |
+| `j` / `k` | Di chuyển xuống / lên | Điều hướng theo từng dòng. |
+| `h` / `l` | Chuyển section | Qua lại giữa PR, Issue, Notification. |
+| `Enter` | Mở chi tiết | Xem preview hoặc mở item được chọn. |
+| `o` | Mở trên trình duyệt | Mở PR/Issue trong GitHub web. |
+| `c` | Checkout branch | Checkout nhánh PR về local. |
+| `d` | Xem diff | Mở thay đổi của PR. |
+| `/` | Tìm kiếm và lọc | Lọc nhanh trong section hiện tại. |
+| `r` | Làm mới dữ liệu | Gọi lại GitHub API. |
+| `?` | Mở trợ giúp | Hiển thị danh sách phím tắt. |
+| `q` | Thoát | Đóng dashboard. |
+
+---
+
+## ⚙️ Cấu hình mẫu
+
+File cấu hình mặc định nằm tại `~/.config/gh-dash/config.yml`.
 
 ```yaml
 # ~/.config/gh-dash/config.yml
@@ -149,17 +179,8 @@ theme:
 
 defaults:
   previewWidth: 60
-  refreshInterval: 30 # seconds
-  language: "vi"      # vi | en | ja | es
-
-cloudSync:
-  enabled: true
-  autoBackupDaily: true
-  encryption: "AES-256"
-
-security:
-  require2FAForMerge: true
-  securityPatchAlerts: true
+  refreshInterval: 30
+  language: "vi"
 
 prSections:
   - title: "My Open PRs"
@@ -174,86 +195,65 @@ issueSections:
 
 ---
 
-## 📊 Complete Customization Parameter Matrix
+## 🎨 Tùy biến thường dùng
 
-| Parameter Path | Type | Default | Options | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `theme.ui.colors.primary` | Hex String | `#7C3AED` | Any valid HEX | Primary highlight color for active tab |
-| `theme.borderStyle` | String | `rounded` | `rounded`, `double`, `normal`, `none` | Border style for terminal panels |
-| `defaults.refreshInterval` | Integer | `30` | `5` - `300` | Automatic refresh interval in seconds |
-| `defaults.language` | String | `vi` | `vi`, `en`, `ja`, `es` | Interface display language |
-| `cloudSync.enabled` | Boolean | `true` | `true`, `false` | Enable real-time cloud settings sync |
-| `cloudSync.autoBackupDaily` | Boolean | `true` | `true`, `false` | Automatic daily snapshot backup to cloud |
-| `security.require2FAForMerge` | Boolean | `true` | `true`, `false` | Require TOTP confirmation before merging PRs |
-| `security.securityPatchAlerts`| Boolean | `true` | `true`, `false` | Push alerts for critical CVE patches |
+| Tham số | Kiểu | Giá trị mẫu | Công dụng |
+| --- | --- | --- | --- |
+| `theme.ui.colors.primary` | `string` | `#7C3AED` | Màu nhấn cho item đang active. |
+| `theme.borderStyle` | `string` | `rounded` | Kiểu border: `rounded`, `double`, `normal`, `none`. |
+| `defaults.previewWidth` | `number` | `60` | Độ rộng vùng preview. |
+| `defaults.refreshInterval` | `number` | `30` | Chu kỳ refresh theo giây. |
+| `prSections[].filters` | `string` | `is:open author:@me` | GitHub search query cho PR section. |
+| `issueSections[].filters` | `string` | `is:open assignee:@me` | GitHub search query cho Issue section. |
 
 ---
 
-## 🔌 Developer API & Integration Guide
+## 🧑‍💻 Dành cho nhà phát triển
 
-`gh-dash` exposes a local REST & WebSocket endpoint for automation tools and extensions.
+```bash
+# Clone repository
+git clone https://github.com/dlvhdr/gh-dash.git
+cd gh-dash
 
-### GET `/api/v1/telemetry`
+# Chạy test Go
+go test ./...
 
-Returns real-time operational statistics.
-
-```json
-{
-  "status": "healthy",
-  "version": "4.12.0",
-  "uptimeSeconds": 86400,
-  "cpuUsagePercent": 1.2,
-  "memoryMb": 24.5,
-  "apiCallsCount": 1420,
-  "cloudSyncState": "synced"
-}
+# Chạy ứng dụng local
+go run .
 ```
 
-### Node.js Integration Example
+Nếu bạn làm việc với giao diện tài liệu trong repo này:
 
-```javascript
-import { GhDashClient } from 'gh-dash-sdk';
-
-const client = new GhDashClient({
-  endpoint: 'http://localhost:3000/api/v1',
-  authToken: process.env.GH_DASH_TOKEN,
-});
-
-async function run() {
-  const prs = await client.getPullRequests({ filter: 'is:open' });
-  console.log(`Open PRs: ${prs.length}`);
-}
-
-run();
+```bash
+npm install
+npm run dev
+npm run build
 ```
 
 ---
 
-## 🛡 Security & 2FA Setup
+## 🧯 Khắc phục sự cố
 
-1. **Enable 2FA Guard**: Turn on `security.require2FAForMerge: true` in your `config.yml`.
-2. **Scan TOTP QR Code**: Open `gh dash --setup-2fa` to link your authenticator app (Google Authenticator, Authy, 1Password).
-3. **Verify**: Enter 6-digit TOTP code before approving critical PRs or altering cloud sync settings.
-
----
-
-## 🚨 Troubleshooting & FAQ
-
-| Problem / Issue | Possible Cause | Solution |
-| :--- | :--- | :--- |
-| `Error: gh CLI not authenticated` | Missing GitHub auth token | Run `gh auth login` in terminal |
-| `Rate limit exceeded (403)` | GitHub REST API quota reached | Enable Personal Access Token (PAT) with full `repo` scope |
-| `Cloud sync failing` | Network firewall or 2FA challenge required | Re-authenticate 2FA using `gh dash --sync-auth` |
-| `Terminal display corruption` | Non-UTF8 locale settings | Export `LANG=en_US.UTF-8` or `vi_VN.UTF-8` in `.bashrc`/`.zshrc` |
+| Vấn đề | Nguyên nhân thường gặp | Cách xử lý |
+| --- | --- | --- |
+| `gh CLI not authenticated` | Chưa đăng nhập GitHub CLI. | Chạy `gh auth login`. |
+| `Rate limit exceeded` | Hết quota GitHub API. | Kiểm tra token hoặc giảm tần suất refresh. |
+| Giao diện bị lệch | Terminal chưa bật UTF-8 hoặc font không hỗ trợ ký tự box drawing. | Đặt `LANG=en_US.UTF-8` và dùng Nerd Font/monospace. |
+| Không thấy PR/Issue | Filter quá chặt hoặc sai repository context. | Kiểm tra lại `filters` trong `config.yml`. |
 
 ---
 
-## 👥 Community Forum & Pull Request Guidelines
+## 🤝 Đóng góp
 
-We welcome community contributions! Please read our guidelines before opening a Pull Request:
+Mọi đóng góp đều được chào đón:
 
-1. **Fork the repo** & create your branch from `main`.
-2. **Run tests**: `go test ./...`
-3. **Format code**: `gofmt -s -w .`
-4. **Submit PR**: Provide a clear explanation of changes and link related issues.
-5. **Community Board**: Join our discussions at [GitHub Discussions](https://github.com/dlvhdr/gh-dash/discussions).
+1. Fork repository và tạo branch mới từ `main`.
+2. Chạy `go test ./...` trước khi gửi thay đổi.
+3. Format code bằng `gofmt -s -w .` nếu có chỉnh Go.
+4. Mở Pull Request với mô tả rõ ràng và liên kết issue liên quan nếu có.
+
+<div align="center">
+
+**Made for developers who live in the terminal.**
+
+</div>

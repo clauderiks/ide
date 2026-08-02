@@ -24,6 +24,12 @@ export const ReadmeViewer: React.FC<ReadmeViewerProps> = ({ language }) => {
     setMarkdownContent(readmeTexts[language] || readmeTexts.en);
   }, [language]);
 
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setViewMode('preview');
+    }
+  }, []);
+
   const t = translations[language] || translations.en;
 
   const handleCopy = () => {
@@ -76,12 +82,12 @@ export const ReadmeViewer: React.FC<ReadmeViewerProps> = ({ language }) => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 font-mono select-none">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 font-mono">
       {/* Top Controls Bar - IBM Carbon Square Aesthetics */}
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 p-3 rounded-none bg-zinc-950 border border-zinc-800">
+      <div className="flex flex-col gap-3 mb-5 p-3 rounded-none bg-zinc-950 border border-zinc-800 sm:mb-6 lg:flex-row lg:items-center lg:justify-between">
         
         {/* Search Input */}
-        <div className="relative flex-1 min-w-[220px]">
+        <div className="relative w-full min-w-0 flex-1">
           <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
           <input
             type="text"
@@ -93,10 +99,10 @@ export const ReadmeViewer: React.FC<ReadmeViewerProps> = ({ language }) => {
         </div>
 
         {/* View Mode Split/Editor/Preview Switcher */}
-        <div className="flex items-center bg-black border border-zinc-800 p-0.5 rounded-none text-xs">
+        <div className="grid w-full grid-cols-3 bg-black border border-zinc-800 p-0.5 rounded-none text-xs sm:flex sm:w-auto">
           <button
             onClick={() => setViewMode('split')}
-            className={`flex items-center space-x-1 px-2 py-1 rounded-none text-[11px] font-mono transition ${
+            className={`flex items-center justify-center space-x-1 px-2 py-1 rounded-none text-[11px] font-mono transition ${
               viewMode === 'split' ? 'bg-emerald-600 text-white border border-emerald-400' : 'text-zinc-400 hover:text-white'
             }`}
             title="Split Editor & Preview"
@@ -106,7 +112,7 @@ export const ReadmeViewer: React.FC<ReadmeViewerProps> = ({ language }) => {
           </button>
           <button
             onClick={() => setViewMode('editor')}
-            className={`flex items-center space-x-1 px-2 py-1 rounded-none text-[11px] font-mono transition ${
+            className={`flex items-center justify-center space-x-1 px-2 py-1 rounded-none text-[11px] font-mono transition ${
               viewMode === 'editor' ? 'bg-emerald-600 text-white border border-emerald-400' : 'text-zinc-400 hover:text-white'
             }`}
             title="Editor Only"
@@ -116,7 +122,7 @@ export const ReadmeViewer: React.FC<ReadmeViewerProps> = ({ language }) => {
           </button>
           <button
             onClick={() => setViewMode('preview')}
-            className={`flex items-center space-x-1 px-2 py-1 rounded-none text-[11px] font-mono transition ${
+            className={`flex items-center justify-center space-x-1 px-2 py-1 rounded-none text-[11px] font-mono transition ${
               viewMode === 'preview' ? 'bg-emerald-600 text-white border border-emerald-400' : 'text-zinc-400 hover:text-white'
             }`}
             title="Preview Only"
@@ -127,7 +133,7 @@ export const ReadmeViewer: React.FC<ReadmeViewerProps> = ({ language }) => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center space-x-2">
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:space-x-2 sm:gap-0">
           {/* Reset Template */}
           <button
             onClick={handleReset}
@@ -149,7 +155,7 @@ export const ReadmeViewer: React.FC<ReadmeViewerProps> = ({ language }) => {
           </button>
 
           {/* Export Formats */}
-          <div className="flex items-center space-x-1 border border-zinc-800 rounded-none bg-black p-0.5">
+          <div className="col-span-2 flex items-center justify-between gap-1 border border-zinc-800 rounded-none bg-black p-0.5 sm:col-span-1 sm:justify-start">
             {(['md', 'json', 'html'] as const).map((fmt) => (
               <button
                 key={fmt}
@@ -174,11 +180,11 @@ export const ReadmeViewer: React.FC<ReadmeViewerProps> = ({ language }) => {
       </div>
 
       {/* Main Grid Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-6">
         
         {/* Left TOC Navigation Bar */}
-        <div className="lg:col-span-1 space-y-4">
-          <div className="p-3.5 rounded-none bg-zinc-950 border border-zinc-800 sticky top-28">
+        <div className="lg:col-span-1 space-y-4 order-2 lg:order-1">
+          <div className="p-3.5 rounded-none bg-zinc-950 border border-zinc-800 lg:sticky lg:top-28">
             <h3 className="text-xs font-bold font-mono text-white mb-2.5 flex items-center space-x-2 border-b border-zinc-800/80 pb-2">
               <FileText className="w-3.5 h-3.5 text-emerald-400" />
               <span>Table of Contents</span>
@@ -199,7 +205,7 @@ export const ReadmeViewer: React.FC<ReadmeViewerProps> = ({ language }) => {
         </div>
 
         {/* Split Editor and Live Markdown Preview Container */}
-        <div className="lg:col-span-3 space-y-4">
+        <div className="lg:col-span-3 space-y-4 order-1 lg:order-2">
           <div className={`grid gap-4 ${viewMode === 'split' ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
             
             {/* Raw Textarea Markdown Editor */}
@@ -233,7 +239,7 @@ export const ReadmeViewer: React.FC<ReadmeViewerProps> = ({ language }) => {
                   </span>
                   <span className="text-[10px] text-emerald-400 font-semibold">• Live Rendered</span>
                 </div>
-                <div className="p-4 sm:p-6 text-zinc-200 font-mono text-xs leading-relaxed overflow-x-auto min-h-[500px]">
+                <div className="p-4 sm:p-6 text-zinc-200 font-mono text-xs leading-relaxed overflow-x-auto min-h-[360px] sm:min-h-[500px]">
                   <div className="markdown-body space-y-4 prose-invert">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
                       {markdownContent}

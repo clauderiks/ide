@@ -37,3 +37,87 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #10b981;
 }
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background: #09090b;
+  }
+
+  #root {
+    min-height: 100vh;
+    background: #09090b;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .markdown-body h1 {
+    @apply text-xl sm:text-3xl font-bold text-white leading-tight border-b border-zinc-800 pb-3;
+  }
+
+  .markdown-body h2 {
+    @apply text-lg sm:text-2xl font-bold text-emerald-300 mt-8 border-b border-zinc-800 pb-2;
+  }
+
+  .markdown-body h3 {
+    @apply text-base sm:text-lg font-semibold text-zinc-100 mt-5;
+  }
+
+  .markdown-body p,
+  .markdown-body li {
+    @apply text-sm leading-7 text-zinc-300;
+  }
+
+  .markdown-body a {
+    @apply text-emerald-400 underline underline-offset-4;
+  }
+
+  .markdown-body ul,
+  .markdown-body ol {
+    @apply pl-5 space-y-2;
+  }
+
+  .markdown-body blockquote {
+    @apply border-l-2 border-emerald-500 bg-emerald-950/20 px-4 py-2 text-zinc-200;
+  }
+
+  .markdown-body pre {
+    @apply overflow-x-auto border border-zinc-800 bg-black p-4 text-xs text-emerald-300;
+  }
+
+  .markdown-body code {
+    @apply bg-zinc-900 px-1.5 py-0.5 text-emerald-300;
+  }
+
+  .markdown-body pre code {
+    @apply bg-transparent p-0;
+  }
+
+  .markdown-body table {
+    @apply block w-full overflow-x-auto border-collapse text-xs;
+  }
+
+  .markdown-body th,
+  .markdown-body td {
+    @apply border border-zinc-800 px-3 py-2 align-top;
+  }
+
+  .markdown-body th {
+    @apply bg-zinc-900 text-zinc-100;
+  }
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
