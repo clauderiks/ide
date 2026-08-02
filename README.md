@@ -1,6 +1,6 @@
 <div align="center">
 
-# Clriks dash
+# CLRKIS DASH
 
 ### Terminal dashboard tối giản, nhanh và đẹp cho GitHub CLI
 
